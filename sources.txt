@@ -1,0 +1,13 @@
+C:\Users\Admin\IdeaProjects\BTL\src\Main.java
+C:\Users\Admin\IdeaProjects\BTL\src\gamemanager\GameManager.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\GameObject.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\brick\Brick.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\brick\NormalBrick.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\brick\StrongBrick.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\movable\Ball.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\movable\MovableObject.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\movable\Paddle.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\powerup\ExpandPaddlePowerUp.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\powerup\FastBallPowerUp.java
+C:\Users\Admin\IdeaProjects\BTL\src\gameobject\powerup\PowerUp.java
+C:\Users\Admin\IdeaProjects\BTL\src\renderer\Renderer.java

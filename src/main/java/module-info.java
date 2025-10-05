@@ -1,8 +1,10 @@
-module org.example.demofx {
+module org.example.arkanoidFX {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens org.example.demofx to javafx.fxml;
-    exports org.example.demofx;
+    opens org.example.arkanoidFX to javafx.fxml;
+    exports org.example.arkanoidFX;
+    exports org.example.arkanoidFX.renderer;
+    opens org.example.arkanoidFX.renderer to javafx.fxml;
 }
