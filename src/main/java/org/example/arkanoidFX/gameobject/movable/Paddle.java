@@ -1,6 +1,8 @@
 package org.example.arkanoidFX.gameobject.movable;
 
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.example.arkanoidFX.gameobject.powerup.PowerUp;
 
 
@@ -12,9 +14,16 @@ public class Paddle extends MovableObject {
 
     public Paddle(int x, int y, int width, int height, int gameWidth) {
         super(x, y, width, height);
-        this.speed = 2;
+        this.speed = 10;
         this.originalWidth = width;
         this.gameWidth = gameWidth;
+
+        // Create the Rectangle shape for JavaFX rendering
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setFill(Color.BLUE);
+        rectangle.setLayoutX(x);
+        rectangle.setLayoutY(y);
+        this.shape = rectangle;
     }
 
     public void moveLeft() {
@@ -36,10 +45,16 @@ public class Paddle extends MovableObject {
 
     public void expandPaddle() {
         this.width = originalWidth * 2;
+        if (shape instanceof Rectangle) {
+            ((Rectangle) shape).setWidth(width);
+        }
     }
 
     public void restorePaddleSize() {
         this.width = originalWidth;
+        if (shape instanceof Rectangle) {
+            ((Rectangle) shape).setWidth(width);
+        }
     }
 
     public int getOriginalWidth() {
@@ -52,6 +67,9 @@ public class Paddle extends MovableObject {
         // Keep paddle within game boundaries
         if (x < 0) x = 0;
         if (x + width > gameWidth) x = gameWidth - width;
+
+        // Update shape position
+        updateShapePosition();
     }
 
     @Override

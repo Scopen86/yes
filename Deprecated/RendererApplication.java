@@ -57,9 +57,7 @@ public class RendererApplication extends Application {
         scoreText.setFill(Color.WHITE);
 
         Scene scene = createScene();
-        primaryStage.setTitle("Arkanoid!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+
 
         startGameLoop();
     }
@@ -154,7 +152,5 @@ public class RendererApplication extends Application {
         scoreText.setText("Score: " + gameManager.getScore());
     }
 
-    public static void main(String[] args){
-        launch(args);
-    }
+
 }

@@ -1,5 +1,7 @@
 package org.example.arkanoidFX.gameobject.powerup;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.example.arkanoidFX.gameobject.movable.Ball;
 import org.example.arkanoidFX.gameobject.movable.MovableObject;
 
@@ -14,6 +16,15 @@ public class FastBallPowerUp extends PowerUp {
         super(x, y, width, height);
         this.type = "FastBall";
         this.duration = 100; // Duration in game ticks
+
+        // Create the Rectangle shape for JavaFX rendering
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setFill(Color.YELLOW);
+        rectangle.setStroke(Color.ORANGE);
+        rectangle.setStrokeWidth(2);
+        rectangle.setLayoutX(x);
+        rectangle.setLayoutY(y);
+        this.shape = rectangle;
     }
 
     @Override
@@ -33,6 +44,7 @@ public class FastBallPowerUp extends PowerUp {
     @Override
     public void update() {
         fall();
+        updateShapePosition();
     }
 
     @Override

@@ -1,5 +1,8 @@
 package org.example.arkanoidFX.gameobject.movable;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 /**
  * Represents the ball that bounces around the game area.
  * Demonstrates OOP principle: Polymorphism (overriding methods)
@@ -12,12 +15,19 @@ public class Ball extends MovableObject {
 
     public Ball(int x, int y, int width, int height, int gameWidth, int gameHeight) {
         super(x, y, width, height);
-        this.speed = 1;
+        this.speed = 10;  // Set to a reasonable speed (3 pixels per frame)
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.dx = 1;  // Initial direction
-        this.dy = -1; // Moving up
+        this.dx = speed;  // Use speed variable
+        this.dy = -speed; // Use speed variable (moving up)
         this.active = true;
+
+        // Create the Circle shape for JavaFX rendering
+        Circle circle = new Circle(width / 2.0);
+        circle.setFill(Color.WHITE);
+        circle.setLayoutX(x + width / 2.0);
+        circle.setLayoutY(y + height / 2.0);
+        this.shape = circle;
     }
 
     public boolean isActive() {
@@ -89,7 +99,8 @@ public class Ball extends MovableObject {
             y = 0;
         }
 
-        // Check if ball fell off bottom (handled by GameManager)
+        // Update shape position
+        updateShapePosition();
     }
 
     @Override
@@ -105,8 +116,9 @@ public class Ball extends MovableObject {
     public void reset(int x, int y) {
         this.x = x;
         this.y = y;
-        this.dx = 1;
-        this.dy = -1;
+        this.dx = speed;  // Use current speed
+        this.dy = -speed; // Use current speed (moving up)
         this.active = true;
+        updateShapePosition();
     }
 }

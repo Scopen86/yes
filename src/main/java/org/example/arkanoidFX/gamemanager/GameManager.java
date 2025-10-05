@@ -1,5 +1,8 @@
 package org.example.arkanoidFX.gamemanager;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import org.example.arkanoidFX.gameobject.brick.NormalBrick;
 import org.example.arkanoidFX.gameobject.brick.StrongBrick;
 import org.example.arkanoidFX.gameobject.brick.Brick;
@@ -8,7 +11,7 @@ import org.example.arkanoidFX.gameobject.movable.Paddle;
 import org.example.arkanoidFX.gameobject.powerup.PowerUp;
 import org.example.arkanoidFX.gameobject.powerup.ExpandPaddlePowerUp;
 import org.example.arkanoidFX.gameobject.powerup.FastBallPowerUp;
-import renderer.Renderer;
+import org.example.arkanoidFX.renderer.Renderer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,50 +24,33 @@ import java.util.Random;
  */
 public class GameManager {
     // Game constants
-    private static final int GAME_WIDTH = 60;
-    private static final int GAME_HEIGHT = 30;
-    private static final int PADDLE_WIDTH = 10;
-    private static final int PADDLE_HEIGHT = 1;
-    private static final int BALL_SIZE = 1;
-    private static final int BRICK_WIDTH = 6;
-    private static final int BRICK_HEIGHT = 2;
+    private static final int GAME_WIDTH = 600;
+    private static final int GAME_HEIGHT = 800;
+    private static final int PADDLE_WIDTH = 100;
+    private static final int PADDLE_HEIGHT = 20;
+    private static final int BALL_SIZE = 30;
+    private static final int BRICK_WIDTH = 50;
+    private static final int BRICK_HEIGHT = 30;
 
     // Game objects
     private Paddle paddle;
     private Ball ball;
     private List<Brick> bricks;
     private List<PowerUp> powerUps;
-    private List<ActivePowerUp> activePowerUps; // Track active power-ups with duration
+    private List<ActivePowerUp> activePowerUps;
 
     // Game state
     private int score;
     private int lives;
     private int level;
-    private String gameState; // "MENU", "PLAYING", "PAUSED", "GAME_OVER", "WIN"
+    private String gameState;
     private Renderer renderer;
+    private Stage primaryStage;
     private Random random;
-
-    public Ball getBall() {
-        return ball;
-    }
-
-    public Paddle getPaddle() {
-        return paddle;
-    }
-
-    public List<Brick> getBricks() {
-        return bricks;
-    }
-
-    public void update() {
-    }
-
-    public String getScore() {
-        return "Score: " + score + "  Lives: " + lives + "  Level: " + level;
-    }
+    private AnimationTimer gameLoop;
 
     // Inner class to track active power-ups with remaining duration
-    private class ActivePowerUp {
+    private static class ActivePowerUp {
         PowerUp powerUp;
         int remainingTicks;
 
@@ -74,8 +60,9 @@ public class GameManager {
         }
     }
 
-    public GameManager() {
-        this.renderer = new Renderer(GAME_WIDTH, GAME_HEIGHT);
+    public GameManager(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.renderer = new Renderer(GAME_WIDTH, GAME_HEIGHT, primaryStage);
         this.random = new Random();
         this.bricks = new ArrayList<>();
         this.powerUps = new ArrayList<>();
@@ -89,17 +76,73 @@ public class GameManager {
         this.level = 1;
         this.gameState = "PLAYING";
         initializeLevel();
+        handleInput();
+        startGameLoop();
+        renderGame();
+    }
+
+    private void handleInput() {
+        renderer.getScene().setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+
+            if (gameState.equals("PLAYING")) {
+                switch (code) {
+                    case A:
+                    case LEFT:
+                        paddle.moveLeft();
+                        break;
+                    case D:
+                    case RIGHT:
+                        paddle.moveRight();
+                        break;
+                    case P:
+                        gameState = "PAUSED";
+                        break;
+                }
+            } else if (gameState.equals("PAUSED")) {
+                if (code == KeyCode.P) {
+                    gameState = "PLAYING";
+                }
+            }
+        });
+
+        renderer.getScene().setOnKeyReleased(event -> {
+            KeyCode code = event.getCode();
+
+            if (code == KeyCode.A || code == KeyCode.LEFT ||
+                code == KeyCode.D || code == KeyCode.RIGHT) {
+                paddle.stop();
+            }
+        });
+    }
+
+    private void startGameLoop() {
+        gameLoop = new AnimationTimer() {
+            private long lastUpdate = 0;
+
+            @Override
+            public void handle(long now) {
+                // Run at approximately 60 FPS
+                if (now - lastUpdate >= 16_666_666) {
+                    updateGame();
+                    renderer.clear();
+                    renderGame();
+                    lastUpdate = now;
+                }
+            }
+        };
+        gameLoop.start();
     }
 
     private void initializeLevel() {
         // Create paddle
         int paddleX = (GAME_WIDTH - PADDLE_WIDTH) / 2;
-        int paddleY = GAME_HEIGHT - 3;
+        int paddleY = GAME_HEIGHT - PADDLE_HEIGHT - 30;
         paddle = new Paddle(paddleX, paddleY, PADDLE_WIDTH, PADDLE_HEIGHT, GAME_WIDTH);
 
         // Create ball
         int ballX = GAME_WIDTH / 2;
-        int ballY = GAME_HEIGHT - 5;
+        int ballY = GAME_HEIGHT - PADDLE_HEIGHT - BALL_SIZE - 40;
         ball = new Ball(ballX, ballY, BALL_SIZE, BALL_SIZE, GAME_WIDTH, GAME_HEIGHT);
 
         // Create bricks
@@ -111,7 +154,7 @@ public class GameManager {
     }
 
     private void createBricks() {
-        int rows = 5 + level; // More rows as level increases
+        int rows = 5 + level;
         int cols = 8;
         int startY = 2;
         int spacing = 1;
@@ -121,8 +164,7 @@ public class GameManager {
                 int x = col * (BRICK_WIDTH + spacing) + 2;
                 int y = row * (BRICK_HEIGHT + spacing) + startY;
 
-                // Create mix of normal and strong bricks
-                if (random.nextInt(100) < 20) { // 20% strong bricks
+                if (random.nextInt(100) < 20) {
                     bricks.add(new StrongBrick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
                 } else {
                     bricks.add(new NormalBrick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
@@ -136,27 +178,20 @@ public class GameManager {
             return;
         }
 
-        // Update game objects
         paddle.update();
         ball.update();
 
-        // Update power-ups (falling)
         for (PowerUp powerUp : powerUps) {
             powerUp.update();
         }
 
-        // Update active power-up durations
         updateActivePowerUps();
-
-        // Check collisions
         checkCollisions();
 
-        // Check if ball fell off screen
         if (ball.getY() >= GAME_HEIGHT) {
             loseLife();
         }
 
-        // Check win condition
         if (bricks.isEmpty()) {
             levelComplete();
         }
@@ -176,12 +211,10 @@ public class GameManager {
     }
 
     public void checkCollisions() {
-        // Ball-Paddle collision
         if (ball.collidesWith(paddle)) {
             ball.bounceOffPaddle(paddle);
         }
 
-        // Ball-Brick collision
         Iterator<Brick> brickIterator = bricks.iterator();
         while (brickIterator.hasNext()) {
             Brick brick = brickIterator.next();
@@ -192,23 +225,20 @@ public class GameManager {
                 if (brick.isDestroyed()) {
                     score += brick.getScoreValue();
 
-                    // Chance to drop power-up
-                    if (random.nextInt(100) < 15) { // 15% chance
+                    if (random.nextInt(100) < 15) {
                         spawnPowerUp(brick.getX(), brick.getY());
                     }
 
                     brickIterator.remove();
                 }
-                break; // Only collide with one brick per frame
+                break;
             }
         }
 
-        // Paddle-PowerUp collision
         Iterator<PowerUp> powerUpIterator = powerUps.iterator();
         while (powerUpIterator.hasNext()) {
             PowerUp powerUp = powerUpIterator.next();
 
-            // Remove power-ups that fell off screen
             if (powerUp.getY() >= GAME_HEIGHT) {
                 powerUpIterator.remove();
                 continue;
@@ -227,8 +257,7 @@ public class GameManager {
         if (random.nextBoolean()) {
             powerUp = new ExpandPaddlePowerUp(x, y, 2, 1);
         } else {
-            FastBallPowerUp fastBall = new FastBallPowerUp(x, y, 2, 1);
-            powerUp = fastBall;
+            powerUp = new FastBallPowerUp(x, y, 2, 1);
         }
 
         powerUps.add(powerUp);
@@ -245,14 +274,13 @@ public class GameManager {
         if (lives <= 0) {
             gameOver();
         } else {
-            // Reset ball and paddle
             int paddleX = (GAME_WIDTH - paddle.getWidth()) / 2;
-            int paddleY = GAME_HEIGHT - 3;
+            int paddleY = GAME_HEIGHT - PADDLE_HEIGHT - 30;
             paddle.setX(paddleX);
             paddle.stop();
 
             int ballX = GAME_WIDTH / 2;
-            int ballY = GAME_HEIGHT - 5;
+            int ballY = GAME_HEIGHT - PADDLE_HEIGHT - BALL_SIZE - 40;
             ball.reset(ballX, ballY);
         }
     }
@@ -266,109 +294,18 @@ public class GameManager {
         gameState = "GAME_OVER";
     }
 
-    public void handleInput(String input) {
-        if (input == null) return;
-
-        switch (input.toLowerCase()) {
-            case "a":
-            case "left":
-                if (gameState.equals("PLAYING")) {
-                    paddle.moveLeft();
-                }
-                break;
-            case "d":
-            case "right":
-                if (gameState.equals("PLAYING")) {
-                    paddle.moveRight();
-                }
-                break;
-            case "s":
-            case "stop":
-                if (gameState.equals("PLAYING")) {
-                    paddle.stop();
-                }
-                break;
-            case "p":
-            case "pause":
-                if (gameState.equals("PLAYING")) {
-                    gameState = "PAUSED";
-                } else if (gameState.equals("PAUSED")) {
-                    gameState = "PLAYING";
-                }
-                break;
-            case "q":
-            case "quit":
-                gameState = "MENU";
-                break;
+    public void stopGame() {
+        if (gameLoop != null) {
+            gameLoop.stop();
         }
-    }
-
-    public void render() {
-        renderer.clear();
-
-        if (gameState.equals("MENU")) {
-            renderMenu();
-        } else if (gameState.equals("GAME_OVER")) {
-            renderGameOver();
-        } else {
-            renderGame();
-        }
-
-        renderer.display();
-    }
-
-    private void renderMenu() {
-        renderer.drawText(GAME_WIDTH / 2 - 10, 8, "=== ARKANOID ===");
-        renderer.drawText(GAME_WIDTH / 2 - 15, 12, "Press 'S' to Start Game");
-        renderer.drawText(GAME_WIDTH / 2 - 12, 14, "Press 'Q' to Quit");
-        renderer.drawText(GAME_WIDTH / 2 - 10, 18, "Controls:");
-        renderer.drawText(GAME_WIDTH / 2 - 15, 19, "A/Left - Move Left");
-        renderer.drawText(GAME_WIDTH / 2 - 15, 20, "D/Right - Move Right");
-        renderer.drawText(GAME_WIDTH / 2 - 15, 21, "S - Stop Paddle");
-        renderer.drawText(GAME_WIDTH / 2 - 15, 22, "P - Pause");
-    }
-
-    private void renderGameOver() {
-        renderer.drawText(GAME_WIDTH / 2 - 8, 12, "GAME OVER!");
-        renderer.drawText(GAME_WIDTH / 2 - 10, 14, "Final Score: " + score);
-        renderer.drawText(GAME_WIDTH / 2 - 10, 16, "Level: " + level);
-        renderer.drawText(GAME_WIDTH / 2 - 15, 18, "Press 'S' to Play Again");
-        renderer.drawText(GAME_WIDTH / 2 - 12, 19, "Press 'Q' to Quit");
     }
 
     private void renderGame() {
-        // Draw UI info
-        renderer.drawText(2, 0, "Score: " + score + "  Lives: " + lives + "  Level: " + level);
-
-        // Draw bricks
         for (Brick brick : bricks) {
-            char symbol = brick instanceof StrongBrick ? '#' : '=';
-            renderer.drawRect(brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight(), symbol);
+            renderer.draw(brick);
         }
 
-        // Draw power-ups
-        for (PowerUp powerUp : powerUps) {
-            char symbol = powerUp instanceof ExpandPaddlePowerUp ? 'E' : 'F';
-            renderer.drawChar(powerUp.getX(), powerUp.getY(), symbol);
-        }
-
-        // Draw paddle
-        renderer.drawRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight(), '_');
-
-        // Draw ball
-        renderer.drawChar(ball.getX(), ball.getY(), 'O');
-
-        // Draw game state
-        if (gameState.equals("PAUSED")) {
-            renderer.drawText(GAME_WIDTH / 2 - 6, GAME_HEIGHT / 2, "*** PAUSED ***");
-        }
-    }
-
-    public String getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(String state) {
-        this.gameState = state;
+        renderer.draw(paddle);
+        renderer.draw(ball);
     }
 }

@@ -1,6 +1,7 @@
 module org.example.arkanoidFX {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
 
     opens org.example.arkanoidFX to javafx.fxml;

@@ -1,6 +1,8 @@
 package org.example.arkanoidFX.gameobject.powerup;
 
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.example.arkanoidFX.gameobject.movable.MovableObject;
 import org.example.arkanoidFX.gameobject.movable.Paddle;
 
@@ -15,6 +17,15 @@ public class ExpandPaddlePowerUp extends PowerUp {
         super(x, y, width, height);
         this.type = "ExpandPaddle";
         this.duration = 100; // Duration in game ticks
+
+        // Create the Rectangle shape for JavaFX rendering
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setFill(Color.GREEN);
+        rectangle.setStroke(Color.DARKGREEN);
+        rectangle.setStrokeWidth(2);
+        rectangle.setLayoutX(x);
+        rectangle.setLayoutY(y);
+        this.shape = rectangle;
     }
 
     @Override
@@ -30,6 +41,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     @Override
     public void update() {
         fall();
+        updateShapePosition();
     }
 
     @Override

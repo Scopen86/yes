@@ -5,22 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98c97097-7428-4867-a374-2e7f83d5d4cb" name="Changes" comment="update .gitignore">
-      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/Ball.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/Brick.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/GameManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/GameObject.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/MovableObject.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/NormalBrick.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/Paddle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/demofx/RendererApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/demofx/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gamemanager/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gamemanager/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/brick/NormalBrick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/brick/NormalBrick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/brick/StrongBrick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/brick/StrongBrick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/movable/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/movable/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/movable/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/movable/Paddle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/powerup/ExpandPaddlePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/powerup/ExpandPaddlePowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/powerup/FastBallPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/gameobject/powerup/FastBallPowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/renderer/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/renderer/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/arkanoidFX/renderer/RendererApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Deprecated/RendererApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,12 +51,12 @@
     &quot;assignee&quot;: &quot;Scopen86&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Scopen86/yes.git&quot;,
-    &quot;accountId&quot;: &quot;53686786-a94b-4721-a027-625ba37a2bd2&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Scopen86/yes",
+    "accountId": "2e17c1f2-7009-41c7-9723-fa62102c9465"
   }
-}</component>
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -81,22 +81,25 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RendererApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/scopen/IdeaProjects/BTL&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.RendererApplication.executor": "Run",
+    "Application.org.example.arkanoidFX.Main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Administrator/IdeaProjects/ArkanoidFX",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\IdeaProjects\demoFX\Deprecated" />
       <recent name="$PROJECT_DIR$/Deprecated" />
       <recent name="$PROJECT_DIR$/src/main/java/org/example/demofx" />
       <recent name="$PROJECT_DIR$" />
@@ -107,9 +110,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="BTL" />
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="org.example.arkanoidFX.Main" />
+      <module name="ArkanoidFX" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
